@@ -1,3 +1,5 @@
+package com.github.theapache64.aoc2024
+
 fun main(args: Array<String>) {
     val day = Day1() // Change day here to get answers
 

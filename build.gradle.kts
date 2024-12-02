@@ -1,6 +1,6 @@
 plugins {
     kotlin("jvm") version "2.1.0"
-    kotlin("plugin.allopen") version "2.0.21"
+    kotlin("plugin.allopen") version "2.1.0"
     id("org.jetbrains.kotlinx.benchmark") version "0.4.13"
 }
 
@@ -12,7 +12,7 @@ repositories {
 }
 
 dependencies {
-    testImplementation("org.jetbrains.kotlin:kotlin-test")
+    testImplementation(kotlin("test"))
     implementation("org.jetbrains.kotlinx:kotlinx-benchmark-runtime:0.4.13")
 }
 
@@ -20,12 +20,12 @@ tasks.test {
     useJUnitPlatform()
 }
 kotlin {
-    jvmToolchain(23)
+    jvmToolchain(20)
 }
 
 benchmark {
     targets {
-        register("jvm")
+        register("main")
     }
 }
 

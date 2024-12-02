@@ -1,3 +1,5 @@
+package com.github.theapache64.aoc2024
+
 import kotlin.math.absoluteValue
 
 interface Puzzle {
