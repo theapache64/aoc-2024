@@ -6,40 +6,33 @@ fun main(args: Array<String>) {
 
 class Day2 : Puzzle() {
     private var isDecreasing: Boolean? = null
-    private var errorReports = mutableListOf<List<Int>>()
-
     override fun solve(): Pair<Int, Int> {
-        val noOfSafeReports = input.lines().map { report ->
-            report.split(" ").map { it.toInt() }.isSafe(shouldAddToReport = true)
-        }.count { isSafe -> isSafe }
-
+        var normalSafeReports = 0
         var noOfToleratedSafeReports = 0
-        for (errorReport in errorReports) {
-            val copyErrorReport = errorReport.toMutableList()
-            nestedLoop@ for ((index, removeElement) in errorReport.withIndex()) {
-                copyErrorReport.removeAt(index)
-                if (copyErrorReport.isSafe(shouldAddToReport = false)) {
-                    noOfToleratedSafeReports++
-                    break@nestedLoop
-                } else {
-                    copyErrorReport.add(index, removeElement)
+        input.lines().forEach { line ->
+            val report = line.split(" ").map { it.toInt() }
+            val isNormalSafeReport = report.isSafe()
+            if (isNormalSafeReport) {
+                normalSafeReports++
+            } else {
+                for (index in 0..report.lastIndex) {
+                    val reportCopy = report.toMutableList().apply { removeAt(index) }
+                    if (reportCopy.isSafe()) {
+                        noOfToleratedSafeReports++
+                        break
+                    }
                 }
             }
         }
 
-        return noOfSafeReports to (noOfToleratedSafeReports + noOfSafeReports)
+        return normalSafeReports to (noOfToleratedSafeReports + normalSafeReports)
     }
 
-    private fun List<Int>.isSafe(shouldAddToReport: Boolean): Boolean {
+    private fun List<Int>.isSafe(): Boolean {
         isDecreasing = null
         val adjPairs = this.windowed(2)
-        for (pair in adjPairs) {
-            val (x, y) = pair
-            val isSafe = isSafe(x, y)
-            if (!isSafe) {
-                if (shouldAddToReport) {
-                    errorReports.add(this)
-                }
+        for ((x, y) in adjPairs) {
+            if (!isSafe(x, y)) {
                 return false
             }
         }
