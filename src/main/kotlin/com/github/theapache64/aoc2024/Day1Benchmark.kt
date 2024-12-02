@@ -8,11 +8,26 @@ class Day1Benchmark {
 
     @Setup
     fun prepare() {
-        day.setInput(readInput(day::class.simpleName!!))
+        day.input = readInput(day::class.simpleName!!)
     }
 
     @Benchmark
-    fun benchmarkMethod(): Pair<Int, Int> {
+    fun firstSolution(): Pair<Int, Int> {
         return day.solve()
+    }
+
+    @Benchmark
+    fun zipSolution() : Pair<Int, Int> {
+        return day.solveUsingZip()
+    }
+
+    @Benchmark
+    fun zip2Solution() : Pair<Int, Int> {
+        return day.solveUsingZip2()
+    }
+
+    @Benchmark
+    fun substringSolution() : Pair<Int, Int> {
+        return day.solveUsingSubstring()
     }
 }
