@@ -2,9 +2,14 @@ package com.github.theapache64.aoc2024
 
 import kotlin.math.abs
 import kotlin.math.absoluteValue
+import kotlin.system.measureTimeMillis
 
 fun main(args: Array<String>) {
-    Day1().setupAndStart()
+    val day = Day1().setupAndStart()
+    measureTimeMillis { day.solve().also { print(it) } }.also { print("took $it ms\n") }
+    measureTimeMillis { day.solveUsingZip().also { print(it) } }.also { print("took $it ms\n") }
+    measureTimeMillis { day.solveUsingZip2().also { print(it) } }.also { print("took $it ms\n") }
+    measureTimeMillis { day.solveUsingSubstring().also { print(it) } }.also { print("took $it ms\n") }
 }
 
 class Day1 : Puzzle() {
@@ -34,7 +39,7 @@ class Day1 : Puzzle() {
         return diff to similarityScore
     }
 
-    fun solveUsingZip() : Pair<Int, Int> {
+    fun solveUsingZip(): Pair<Int, Int> {
         val foo = input.lines().map { string ->
             val (a, b) = string.split("   ")
             a to b
@@ -43,10 +48,10 @@ class Day1 : Puzzle() {
         val theBs = foo.map { pair -> pair.second.toInt() }.sorted()
         val paired = theAs.zip(theBs)
         val distances = paired.map { pair -> abs(pair.first - pair.second) }
-        val sum= paired.sumOf { pair ->
+        val sum = paired.sumOf { pair ->
             pair.first * theBs.count { i -> i == pair.first }
         }
-       return distances.sum() to sum
+        return distances.sum() to sum
     }
 
     fun solveUsingZip2(): Pair<Int, Int> {
@@ -88,7 +93,7 @@ class Day1 : Puzzle() {
         }.unzip()
 
         val frequencies: Map<Int, Int> = secondPart1.groupingBy { it }.eachCount()
-        val distances = firstPart1.fold(0) { acc, current ->
+        val sum = firstPart1.fold(0) { acc, current ->
             acc + current * frequencies.getOrDefault(current, 0)
         }
 
@@ -98,10 +103,10 @@ class Day1 : Puzzle() {
             left to right
         }.unzip()
 
-        val sum = firstPart2.sorted().zip(secondPart2.sorted()).sumOf { (first, second) ->
+        val distance = firstPart2.sorted().zip(secondPart2.sorted()).sumOf { (first, second) ->
             abs(first - second)
         }
 
-        return distances to sum
+        return distance to sum
     }
 }

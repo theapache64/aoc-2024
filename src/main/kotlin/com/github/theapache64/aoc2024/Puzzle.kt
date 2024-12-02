@@ -5,9 +5,10 @@ abstract class Puzzle {
     abstract fun solve(): Pair<Int, Int>
 }
 
-fun Puzzle.setupAndStart() {
+fun <T : Puzzle> T.setupAndStart(): T {
     input = readInput(this::class.simpleName!!)
     val answer = solve()
     println("Part 1 answer is `${answer.first}`")
     println("Part 2 answer is `${answer.second}`")
+    return this
 }
