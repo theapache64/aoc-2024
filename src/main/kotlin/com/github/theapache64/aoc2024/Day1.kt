@@ -2,12 +2,12 @@ package com.github.theapache64.aoc2024
 
 import kotlin.math.absoluteValue
 
-interface Puzzle {
-    fun solve(input: String): Pair<Int, Int>
+fun main(args: Array<String>) {
+    Day1().setupAndStart()
 }
 
-class Day1 : Puzzle {
-    override fun solve(input: String): Pair<Int, Int> {
+class Day1 : Puzzle() {
+    override fun solve(): Pair<Int, Int> {
         val leftList = mutableListOf<Int>()
         val rightList = mutableListOf<Int>()
         input.split("\n")

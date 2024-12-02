@@ -3,24 +3,16 @@ package com.github.theapache64.aoc2024
 import kotlinx.benchmark.*
 
 @State(Scope.Benchmark)
-class MyBenchmark {
-    private val size = 10
-    private val list = ArrayList<Int>()
+class Day1Benchmark {
+    private final val day = Day1()
 
     @Setup
     fun prepare() {
-        for (i in 0..<size) {
-            list.add(i)
-        }
-    }
-
-    @TearDown
-    fun cleanup() {
-        list.clear()
+        day.setInput(readInput(day::class.simpleName!!))
     }
 
     @Benchmark
-    fun benchmarkMethod(): Int {
-        return list.sum()
+    fun benchmarkMethod(): Pair<Int, Int> {
+        return day.solve()
     }
 }
