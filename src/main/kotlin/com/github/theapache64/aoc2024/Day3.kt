@@ -25,7 +25,7 @@ class Day3 : Puzzle() {
         var mulSum = 0
         var isEnabled = true
         for (mul in regEx.findAll(input)) {
-            val (key, x, y) = mul.destructured.toList()
+            val (key, x, y) = mul.destructured
             when {
                 key == "don't()" -> {
                     isEnabled = false
