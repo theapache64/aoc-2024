@@ -50,25 +50,27 @@ class Day4 : Puzzle() {
     private fun part2(): Int {
         val charMatrix = input.lines().map { line -> line.toList() }
         var count = 0
-        for (i in 0..charMatrix.lastIndex) {
-            for (j in 0..charMatrix[i].lastIndex) {
-                val char = charMatrix[i][j]
-                if (char == 'A') {
-                    try {
-                        val topLeft = charMatrix[i - 1][j - 1]
-                        val topRight = charMatrix[i - 1][j + 1]
-                        val bottomRight = charMatrix[i + 1][j + 1]
-                        val bottomLeft = charMatrix[i + 1][j - 1]
+        for (rowIndex in 0..charMatrix.lastIndex) {
+            for (colIndex in 0..charMatrix[rowIndex].lastIndex) {
+                val char = charMatrix[rowIndex][colIndex]
+                if (char == 'A' &&
+                    (rowIndex - 1) >= 0 &&
+                    (colIndex - 1) >= 0 &&
+                    (rowIndex + 1) <= charMatrix.lastIndex &&
+                    (colIndex + 1) <= charMatrix[rowIndex].lastIndex
+                ) {
+                    val topLeft = charMatrix[rowIndex - 1][colIndex - 1]
+                    val topRight = charMatrix[rowIndex - 1][colIndex + 1]
+                    val bottomRight = charMatrix[rowIndex + 1][colIndex + 1]
+                    val bottomLeft = charMatrix[rowIndex + 1][colIndex - 1]
 
-                        val isGoodLeftDiagonal =
-                            (topLeft == 'M' && bottomRight == 'S') || (topLeft == 'S' && bottomRight == 'M')
-                        val isGoodRightDiagonal =
-                            (topRight == 'M' && bottomLeft == 'S') || (topRight == 'S' && bottomLeft == 'M')
+                    val isGoodLeftDiagonal =
+                        (topLeft == 'M' && bottomRight == 'S') || (topLeft == 'S' && bottomRight == 'M')
+                    val isGoodRightDiagonal =
+                        (topRight == 'M' && bottomLeft == 'S') || (topRight == 'S' && bottomLeft == 'M')
 
-                        if (isGoodRightDiagonal && isGoodLeftDiagonal) {
-                            count++
-                        }
-                    }catch (e: IndexOutOfBoundsException){
+                    if (isGoodRightDiagonal && isGoodLeftDiagonal) {
+                        count++
                     }
                 }
             }
@@ -87,15 +89,12 @@ class Day4 : Puzzle() {
         val sb = StringBuilder()
         var rowX = rowIndex
         var colX = colIndex
-        return try {
-            repeat(4) {
-                sb.append("${this[rowX][colX]}")
-                rowX += direction.rowVal
-                colX += direction.colVal
-            }
-            sb.toString() == "XMAS"
-        } catch (e: IndexOutOfBoundsException) {
-            false
+        repeat(4) {
+            if (rowX < 0 || colX < 0 || rowX > this.lastIndex || colX > this[rowX].lastIndex ) return false
+            sb.append("${this[rowX][colX]}")
+            rowX += direction.rowVal
+            colX += direction.colVal
         }
+        return sb.toString() == "XMAS"
     }
 }

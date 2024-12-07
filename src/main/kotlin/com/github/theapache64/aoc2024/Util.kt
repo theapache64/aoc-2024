@@ -7,7 +7,7 @@ fun readInput(resName : String): String {
 
 fun Int.assertAndReturn(num : Int): Int {
     require(this == num) {
-        "Expected '$this' but found '$num'"
+        "Expected '$num' but found '$this'"
     }
     return this
 }
