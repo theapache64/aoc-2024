@@ -33,14 +33,14 @@ class Day4 : Puzzle() {
             for (colIndex in 0..charMatrix[rowIndex].lastIndex) {
                 val char = charMatrix[rowIndex][colIndex]
                 if (char == 'X') {
-                    charMatrix.word(rowIndex, colIndex, Direction.TOP).onXMAS { count++ }
-                    charMatrix.word(rowIndex, colIndex, Direction.BOTTOM).onXMAS { count++ }
-                    charMatrix.word(rowIndex, colIndex, Direction.RIGHT).onXMAS { count++ }
-                    charMatrix.word(rowIndex, colIndex, Direction.LEFT).onXMAS { count++ }
-                    charMatrix.word(rowIndex, colIndex, Direction.TOP_RIGHT).onXMAS { count++ }
-                    charMatrix.word(rowIndex, colIndex, Direction.TOP_LEFT).onXMAS { count++ }
-                    charMatrix.word(rowIndex, colIndex, Direction.BOTTOM_RIGHT).onXMAS { count++ }
-                    charMatrix.word(rowIndex, colIndex, Direction.BOTTOM_LEFT).onXMAS { count++ }
+                    charMatrix.isXmas(rowIndex, colIndex, Direction.TOP).ifTrue { count++ }
+                    charMatrix.isXmas(rowIndex, colIndex, Direction.BOTTOM).ifTrue { count++ }
+                    charMatrix.isXmas(rowIndex, colIndex, Direction.RIGHT).ifTrue { count++ }
+                    charMatrix.isXmas(rowIndex, colIndex, Direction.LEFT).ifTrue { count++ }
+                    charMatrix.isXmas(rowIndex, colIndex, Direction.TOP_RIGHT).ifTrue { count++ }
+                    charMatrix.isXmas(rowIndex, colIndex, Direction.TOP_LEFT).ifTrue { count++ }
+                    charMatrix.isXmas(rowIndex, colIndex, Direction.BOTTOM_RIGHT).ifTrue { count++ }
+                    charMatrix.isXmas(rowIndex, colIndex, Direction.BOTTOM_LEFT).ifTrue { count++ }
                 }
             }
         }
@@ -77,13 +77,13 @@ class Day4 : Puzzle() {
         return count
     }
 
-    private fun String.onXMAS(onXMAS: () -> Unit) {
-        if (this == "XMAS") {
+    private fun Boolean.ifTrue(onXMAS: () -> Unit) {
+        if (this) {
             onXMAS()
         }
     }
 
-    private fun List<List<Char>>.word(rowIndex: Int, colIndex: Int, direction: Direction): String {
+    private fun List<List<Char>>.isXmas(rowIndex: Int, colIndex: Int, direction: Direction): Boolean {
         val sb = StringBuilder()
         var rowX = rowIndex
         var colX = colIndex
@@ -93,13 +93,9 @@ class Day4 : Puzzle() {
                 rowX += direction.rowVal
                 colX += direction.colVal
             }
-            return if (sb.toString() == "XMAS") {
-                "XMAS"
-            } else {
-                ""
-            }
+            sb.toString() == "XMAS"
         } catch (e: Exception) {
-            ""
+            false
         }
     }
 }
