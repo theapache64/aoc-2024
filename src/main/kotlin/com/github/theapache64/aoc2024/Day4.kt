@@ -27,14 +27,6 @@ class Day4 : Puzzle() {
         val charMatrix = input.lines().map { line ->
             line.toList()
         }
-        println("QuickTag: Day4:part1: -----------------------")
-        for ((rowIndex, row) in charMatrix.withIndex()) {
-            for ((colIndex, col) in row.withIndex()) {
-                print("[($rowIndex, $colIndex) ${charMatrix[rowIndex][colIndex]}]   ")
-            }
-            println()
-        }
-        println("QuickTag: Day4:part1: -----------------------")
 
         var count = 0
         for (rowIndex in 0..charMatrix.lastIndex) {
