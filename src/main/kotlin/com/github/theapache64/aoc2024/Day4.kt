@@ -68,7 +68,7 @@ class Day4 : Puzzle() {
                         if (isGoodRightDiagonal && isGoodLeftDiagonal) {
                             count++
                         }
-                    }catch (e: Exception){
+                    }catch (e: IndexOutOfBoundsException){
                     }
                 }
             }
@@ -94,7 +94,7 @@ class Day4 : Puzzle() {
                 colX += direction.colVal
             }
             sb.toString() == "XMAS"
-        } catch (e: Exception) {
+        } catch (e: IndexOutOfBoundsException) {
             false
         }
     }
