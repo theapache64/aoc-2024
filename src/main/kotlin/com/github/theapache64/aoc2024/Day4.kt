@@ -4,18 +4,23 @@ fun main(args: Array<String>) {
     Day4().setupAndStart()
 }
 
-enum class Direction {
-    TOP,
-    BOTTOM,
-    LEFT,
-    RIGHT,
-    BOTTOM_RIGHT,
-    BOTTOM_
+enum class Direction(
+    val rowVal: Int? = null,
+    val colVal: Int? = null
+) {
+    TOP(-1, 0),
+    RIGHT(0,1),
+    LEFT(0, -1),
+    BOTTOM(1, 0),
+    BOTTOM_RIGHT(1,1),
+    BOTTOM_LEFT(1, -1),
+    TOP_RIGHT(-1,1),
+    TOP_LEFT(-1, -1),
 }
 
 class Day4 : Puzzle() {
     override fun solve(): Pair<Int, Int> {
-        return part1() to part2()
+        return part1().assertAndReturn(2554) to part2().assertAndReturn(1916)
     }
 
     private fun part1(): Int {
@@ -32,18 +37,18 @@ class Day4 : Puzzle() {
         println("QuickTag: Day4:part1: -----------------------")
 
         var count = 0
-        for (i in 0..charMatrix.lastIndex) {
-            for (j in 0..charMatrix[i].lastIndex) {
-                val char = charMatrix[i][j]
+        for (rowIndex in 0..charMatrix.lastIndex) {
+            for (colIndex in 0..charMatrix[rowIndex].lastIndex) {
+                val char = charMatrix[rowIndex][colIndex]
                 if (char == 'X') {
-                    charMatrix.rightWord(i, j).onXMAS { count++ }
-                    charMatrix.leftWord(i, j).onXMAS { count++ }
-                    charMatrix.topWord(i, j).onXMAS { count++ }
-                    charMatrix.bottomWord(i, j).onXMAS { count++ }
-                    charMatrix.topRightWord(i, j).onXMAS { count++ }
-                    charMatrix.topLeftWord(i, j).onXMAS { count++ }
-                    charMatrix.bottomLeftWord(i, j).onXMAS { count++ }
-                    charMatrix.bottomRightWord(i, j).onXMAS { count++ }
+                    charMatrix.word(rowIndex, colIndex, Direction.TOP).onXMAS { count++ }
+                    charMatrix.word(rowIndex, colIndex, Direction.BOTTOM).onXMAS { count++ }
+                    charMatrix.word(rowIndex, colIndex, Direction.RIGHT).onXMAS { count++ }
+                    charMatrix.word(rowIndex, colIndex, Direction.LEFT).onXMAS { count++ }
+                    charMatrix.word(rowIndex, colIndex, Direction.TOP_RIGHT).onXMAS { count++ }
+                    charMatrix.word(rowIndex, colIndex, Direction.TOP_LEFT).onXMAS { count++ }
+                    charMatrix.word(rowIndex, colIndex, Direction.BOTTOM_RIGHT).onXMAS { count++ }
+                    charMatrix.word(rowIndex, colIndex, Direction.BOTTOM_LEFT).onXMAS { count++ }
                 }
             }
         }
@@ -86,13 +91,18 @@ class Day4 : Puzzle() {
         }
     }
 
-    private fun List<List<Char>>.rightWord(rowIndex: Int, colIndex: Int): String {
+    private fun List<List<Char>>.word(rowIndex: Int, colIndex: Int, direction: Direction): String {
         return try {
-            val c1 = this[rowIndex][colIndex]
-            val c2 = this[rowIndex][colIndex + 1]
-            val c3 = this[rowIndex][colIndex + 2]
-            val c4 = this[rowIndex][colIndex + 3]
-            if ("${c1}${c2}${c3}${c4}" == "XMAS") {
+            val sb = StringBuilder()
+            var rowX = rowIndex
+            var colX = colIndex
+
+            repeat(4) {
+                sb.append("${this[rowX][colX]}")
+                rowX += direction.rowVal!!
+                colX += direction.colVal!!
+            }
+            if (sb.toString() == "XMAS") {
                 "XMAS"
             } else {
                 ""
@@ -101,119 +111,4 @@ class Day4 : Puzzle() {
             ""
         }
     }
-
-    private fun List<List<Char>>.leftWord(rowIndex: Int, colIndex: Int): String {
-        return try {
-            val c1 = this[rowIndex][colIndex]
-            val c2 = this[rowIndex][colIndex - 1]
-            val c3 = this[rowIndex][colIndex - 2]
-            val c4 = this[rowIndex][colIndex - 3]
-            if ("${c1}${c2}${c3}${c4}" == "XMAS") {
-                "XMAS"
-            } else {
-                ""
-            }
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
-    private fun List<List<Char>>.topWord(rowIndex: Int, colIndex: Int): String {
-        return try {
-            val c1 = this[rowIndex][colIndex]
-            val c2 = this[rowIndex - 1][colIndex]
-            val c3 = this[rowIndex - 2][colIndex]
-            val c4 = this[rowIndex - 3][colIndex]
-            if ("${c1}${c2}${c3}${c4}" == "XMAS") {
-                "XMAS"
-            } else {
-                ""
-            }
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
-
-    private fun List<List<Char>>.bottomWord(rowIndex: Int, colIndex: Int): String {
-        return try {
-            val c1 = this[rowIndex][colIndex]
-            val c2 = this[rowIndex + 1][colIndex]
-            val c3 = this[rowIndex + 2][colIndex]
-            val c4 = this[rowIndex + 3][colIndex]
-            if ("${c1}${c2}${c3}${c4}" == "XMAS") {
-                "XMAS"
-            } else {
-                ""
-            }
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
-    private fun List<List<Char>>.topRightWord(rowIndex: Int, colIndex: Int): String {
-        return try {
-            val c1 = this[rowIndex][colIndex]
-            val c2 = this[rowIndex - 1][colIndex + 1]
-            val c3 = this[rowIndex - 2][colIndex + 2]
-            val c4 = this[rowIndex - 3][colIndex + 3]
-            if ("${c1}${c2}${c3}${c4}" == "XMAS") {
-                "XMAS"
-            } else {
-                ""
-            }
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
-    private fun List<List<Char>>.topLeftWord(rowIndex: Int, colIndex: Int): String {
-        return try {
-            val c1 = this[rowIndex][colIndex]
-            val c2 = this[rowIndex - 1][colIndex - 1]
-            val c3 = this[rowIndex - 2][colIndex - 2]
-            val c4 = this[rowIndex - 3][colIndex - 3]
-            if ("${c1}${c2}${c3}${c4}" == "XMAS") {
-                println("QuickTag: Day4:topLeftWord: at $rowIndex, $colIndex")
-                "XMAS"
-            } else {
-                ""
-            }
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
-    private fun List<List<Char>>.bottomRightWord(rowIndex: Int, colIndex: Int): String {
-        return try {
-            val c1 = this[rowIndex][colIndex]
-            val c2 = this[rowIndex + 1][colIndex + 1]
-            val c3 = this[rowIndex + 2][colIndex + 2]
-            val c4 = this[rowIndex + 3][colIndex + 3]
-            if ("${c1}${c2}${c3}${c4}" == "XMAS") {
-                "XMAS"
-            } else {
-                ""
-            }
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
-    private fun List<List<Char>>.bottomLeftWord(rowIndex: Int, colIndex: Int): String {
-        return try {
-            val c1 = this[rowIndex][colIndex]
-            val c2 = this[rowIndex + 1][colIndex - 1]
-            val c3 = this[rowIndex + 2][colIndex - 2]
-            val c4 = this[rowIndex + 3][colIndex - 3]
-            if ("${c1}${c2}${c3}${c4}" == "XMAS") {
-                "XMAS"
-            } else {
-                ""
-            }
-        } catch (e: Exception) {
-            ""
-        }
-    }
-
 }
