@@ -53,24 +53,22 @@ class Day4 : Puzzle() {
         for (rowIndex in 0..charMatrix.lastIndex) {
             for (colIndex in 0..charMatrix[rowIndex].lastIndex) {
                 val char = charMatrix[rowIndex][colIndex]
-                if (char == 'A' &&
-                    (rowIndex - 1) >= 0 &&
-                    (colIndex - 1) >= 0 &&
-                    (rowIndex + 1) <= charMatrix.lastIndex &&
-                    (colIndex + 1) <= charMatrix[rowIndex].lastIndex
-                ) {
-                    val topLeft = charMatrix[rowIndex - 1][colIndex - 1]
-                    val topRight = charMatrix[rowIndex - 1][colIndex + 1]
-                    val bottomRight = charMatrix[rowIndex + 1][colIndex + 1]
-                    val bottomLeft = charMatrix[rowIndex + 1][colIndex - 1]
+                if (char == 'A') {
+                    try {
+                        val topLeft = charMatrix[rowIndex - 1][colIndex - 1]
+                        val topRight = charMatrix[rowIndex - 1][colIndex + 1]
+                        val bottomRight = charMatrix[rowIndex + 1][colIndex + 1]
+                        val bottomLeft = charMatrix[rowIndex + 1][colIndex - 1]
 
-                    val isGoodLeftDiagonal =
-                        (topLeft == 'M' && bottomRight == 'S') || (topLeft == 'S' && bottomRight == 'M')
-                    val isGoodRightDiagonal =
-                        (topRight == 'M' && bottomLeft == 'S') || (topRight == 'S' && bottomLeft == 'M')
+                        val isGoodLeftDiagonal =
+                            (topLeft == 'M' && bottomRight == 'S') || (topLeft == 'S' && bottomRight == 'M')
+                        val isGoodRightDiagonal =
+                            (topRight == 'M' && bottomLeft == 'S') || (topRight == 'S' && bottomLeft == 'M')
 
-                    if (isGoodRightDiagonal && isGoodLeftDiagonal) {
-                        count++
+                        if (isGoodRightDiagonal && isGoodLeftDiagonal) {
+                            count++
+                        }
+                    } catch (_: IndexOutOfBoundsException) {
                     }
                 }
             }
@@ -90,10 +88,13 @@ class Day4 : Puzzle() {
         var rowX = rowIndex
         var colX = colIndex
         repeat(4) {
-            if (rowX < 0 || colX < 0 || rowX > this.lastIndex || colX > this[rowX].lastIndex ) return false
-            sb.append("${this[rowX][colX]}")
-            rowX += direction.rowVal
-            colX += direction.colVal
+            try {
+                sb.append("${this[rowX][colX]}")
+                rowX += direction.rowVal
+                colX += direction.colVal
+            } catch (e: IndexOutOfBoundsException) {
+                return false
+            }
         }
         return sb.toString() == "XMAS"
     }
