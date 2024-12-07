@@ -5,8 +5,8 @@ fun main(args: Array<String>) {
 }
 
 enum class Direction(
-    val rowVal: Int? = null,
-    val colVal: Int? = null
+    val rowVal: Int,
+    val colVal: Int
 ) {
     TOP(-1, 0),
     RIGHT(0,1),
@@ -68,7 +68,7 @@ class Day4 : Puzzle() {
                         if (isGoodRightDiagonal && isGoodLeftDiagonal) {
                             count++
                         }
-                    } catch (e: Exception) {
+                    }catch (e: Exception){
                     }
                 }
             }
@@ -84,17 +84,16 @@ class Day4 : Puzzle() {
     }
 
     private fun List<List<Char>>.word(rowIndex: Int, colIndex: Int, direction: Direction): String {
+        val sb = StringBuilder()
+        var rowX = rowIndex
+        var colX = colIndex
         return try {
-            val sb = StringBuilder()
-            var rowX = rowIndex
-            var colX = colIndex
-
             repeat(4) {
                 sb.append("${this[rowX][colX]}")
-                rowX += direction.rowVal!!
-                colX += direction.colVal!!
+                rowX += direction.rowVal
+                colX += direction.colVal
             }
-            if (sb.toString() == "XMAS") {
+            return if (sb.toString() == "XMAS") {
                 "XMAS"
             } else {
                 ""
